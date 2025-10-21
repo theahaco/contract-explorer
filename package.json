@@ -1,6 +1,6 @@
 {
   "name": "stellar-contract-explorer",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "🔍 Interactive explorer and debugger for Stellar smart contracts",
   "type": "module",
   "main": "./dist/index.cjs",
