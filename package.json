@@ -25,6 +25,9 @@
     "typecheck": "tsc",
     "validate": "npm run lint && npm run format && npm run typecheck"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "prettier": "@aha-co/config/prettier",
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0",
