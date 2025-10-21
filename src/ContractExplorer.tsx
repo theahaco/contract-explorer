@@ -1,0 +1,98 @@
+import { Button, Modal, Icon, IconButton } from "@stellar/design-system"
+import * as React from "react"
+import Debugger from "./components/Debugger"
+import { CEContext, getLabUrl } from "./context"
+import { type Network, type SignTransactionFn } from "./types/types"
+import { type Contracts } from "./util/loadContracts"
+import "./styles.css"
+
+export interface ContractExplorerProps {
+	/**
+	 * Set this to true if you want the dev tools open by default
+	 */
+	initialIsOpen?: boolean
+	/**
+	 * Placement for the toggle button, default "right"
+	 */
+	placement?: "left" | "right"
+	/**
+	 * User's wallet address if connected
+	 */
+	address?: string
+	/**
+	 * Loaded contracts from `loadContracts()`
+	 */
+	contracts: Contracts
+	network: Network
+	signTransaction?: SignTransactionFn
+}
+
+export function ContractExplorer({
+	initialIsOpen = false,
+	placement = "right",
+	address,
+	contracts,
+	network,
+	signTransaction,
+}: ContractExplorerProps): React.ReactElement | null {
+	const [isOpen, setIsOpen] = React.useState(initialIsOpen)
+	const toggleIsOpen = React.useCallback(
+		() => setIsOpen((prev) => !prev),
+		[setIsOpen],
+	)
+
+	// HACK: @stellar/design-system Modal doesn't allow custom classes so
+	// this will help us scope our styles to _our_ modal and not _all_
+	// modals in the app. Since it makes use of Portals, we can't use a
+	// class name on a parent element.
+	React.useEffect(() => {
+		if (isOpen) {
+			document.body.classList.add("ContractExplorer--open")
+		} else {
+			document.body.classList.remove("ContractExplorer--open")
+		}
+	}, [isOpen])
+
+	const value = React.useMemo(
+		() => ({
+			address,
+			network,
+			signTransaction,
+			labUrl: getLabUrl(network),
+		}),
+		[address, network, signTransaction],
+	)
+
+	const title = `${isOpen ? "Close" : "Open"} Contract Explorer`
+	const icon = isOpen ? <Icon.X /> : "🔍"
+
+	return (
+		<CEContext.Provider value={value}>
+			<Button
+				className={`ContractExplorer__toggle ContractExplorer__toggle--${placement} Button Button--primary Button--xl`}
+				variant="primary"
+				size="xl"
+				onClick={toggleIsOpen}
+				title={title}
+			>
+				<span>{title}</span>
+				{icon}
+			</Button>
+
+			<Modal visible={isOpen} onClose={toggleIsOpen}>
+				<Modal.Heading>✨📃🔍 Stellar Contract Explorer</Modal.Heading>
+
+				<Modal.Body>
+					<IconButton
+						altText={title}
+						icon={icon}
+						onClick={toggleIsOpen}
+						className="ContractExplorer__toggle-icon Button Button--xl Button--primary"
+					/>
+
+					<Debugger contracts={contracts} />
+				</Modal.Body>
+			</Modal>
+		</CEContext.Provider>
+	)
+}

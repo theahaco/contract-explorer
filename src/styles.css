@@ -1,0 +1,64 @@
+.ContractExplorer__toggle {
+	position: fixed;
+	bottom: 1.5rem;
+	z-index: 1000;
+}
+
+.ContractExplorer__toggle--right {
+	right: 1.5rem;
+}
+.ContractExplorer__toggle--left {
+	left: 1.5rem;
+}
+
+.ContractExplorer--open .ContractExplorer__toggle {
+	display: none;
+}
+
+.ContractExplorer__toggle span {
+	display: block;
+	width: 0;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.ContractExplorer__toggle:focus span,
+.ContractExplorer__toggle:hover span {
+	width: 100%;
+}
+
+.ContractExplorer--open .Modal__container {
+	max-width: unset;
+	padding: 0;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.ContractExplorer--open .Modal__content {
+	grid-template-rows: minmax(0, max-content) minmax(20rem, 70vh) minmax(
+			0,
+			max-content
+		);
+}
+
+.ContractExplorer--open .ContractExplorer__toggle-icon {
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	z-index: 1000;
+}
+
+.ContractExplorer--open .Modal__content .ModalHeading,
+.ContractExplorer--open .Modal__content .ModalFooter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 1rem 0;
+}
+
+.ContractExplorer--open .Modal__close {
+	display: none;
+}
+
+.ContractExplorer--open .ModalBody {
+	padding-bottom: 2rem;
+}
