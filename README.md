@@ -1,4 +1,4 @@
-<div align="center" style="font-size: 2em;">✨📃🔍</div>
+<h3 align="center">✨📃🔍</h3>
 
 # Stellar Contract Explorer
 
