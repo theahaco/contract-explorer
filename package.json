@@ -14,9 +14,7 @@
       "import": "./dist/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -60,18 +58,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/theahaco/stellar-contract-explorer.git"
+    "url": "git+https://github.com/theahaco/contract-explorer.git"
   },
-  "keywords": [
-    "stellar",
-    "soroban",
-    "smart contracts",
-    "react",
-    "dapp"
-  ],
+  "keywords": ["stellar", "soroban", "smart contracts", "react", "dapp"],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/theahaco/stellar-contract-explorer/issues"
+    "url": "https://github.com/theahaco/contract-explorer/issues"
   },
-  "homepage": "https://github.com/theahaco/stellar-contract-explorer#readme"
+  "homepage": "https://github.com/theahaco/contract-explorer#readme"
 }

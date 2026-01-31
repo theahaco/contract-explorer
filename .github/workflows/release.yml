@@ -88,7 +88,7 @@ jobs:
             git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD >> release_notes.md
           else
             echo "## Initial Release" > release_notes.md
-            echo "First release of stellar-contract-explorer" >> release_notes.md
+            echo "First release of @theahaco/contract-explorer" >> release_notes.md
           fi
 
       - name: 🚀 Create GitHub Release
