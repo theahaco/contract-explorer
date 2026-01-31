@@ -1,12 +1,10 @@
 {
-	"extends": ["@aha-co/config/typescript.lib"],
+	"extends": ["@theahaco/ts-config/typescript.lib"],
 	"include": ["**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"],
 	"compilerOptions": {
 		"lib": ["ES2020", "DOM"],
 		"jsx": "react-jsx",
-		"sourceMap": true,
-		"outDir": "./dist",
 		"esModuleInterop": true,
 		"module": "preserve",
 		"skipLibCheck": true

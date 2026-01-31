@@ -1,12 +1,12 @@
 import { Button, Modal, Icon, IconButton } from "@stellar/design-system"
 import * as React from "react"
-import Debugger from "./components/Debugger"
-import { CEContext, getLabUrl } from "./context"
-import { type Network, type SignTransactionFn } from "./types/types"
-import { type Contracts } from "./util/loadContracts"
-import "./styles.css"
+import {
+	ContractExplorer,
+	type ContractExplorerProps,
+} from "./ContractExplorer"
+import "../styles.css"
 
-export interface ContractExplorerProps {
+export type ContractExplorerModalProps = {
 	/**
 	 * Set this to true if you want the dev tools open by default
 	 */
@@ -15,26 +15,13 @@ export interface ContractExplorerProps {
 	 * Placement for the toggle button, default "right"
 	 */
 	placement?: "left" | "right"
-	/**
-	 * User's wallet address if connected
-	 */
-	address?: string
-	/**
-	 * Loaded contracts from `loadContracts()`
-	 */
-	contracts: Contracts
-	network: Network
-	signTransaction?: SignTransactionFn
-}
+} & ContractExplorerProps
 
-export function ContractExplorer({
+export function ContractExplorerModal({
 	initialIsOpen = false,
 	placement = "right",
-	address,
-	contracts,
-	network,
-	signTransaction,
-}: ContractExplorerProps): React.ReactElement | null {
+	...rest
+}: ContractExplorerModalProps): React.ReactElement | null {
 	const [isOpen, setIsOpen] = React.useState(initialIsOpen)
 	const toggleIsOpen = React.useCallback(
 		() => setIsOpen((prev) => !prev),
@@ -53,21 +40,11 @@ export function ContractExplorer({
 		}
 	}, [isOpen])
 
-	const value = React.useMemo(
-		() => ({
-			address,
-			network,
-			signTransaction,
-			labUrl: getLabUrl(network),
-		}),
-		[address, network, signTransaction],
-	)
-
 	const title = `${isOpen ? "Close" : "Open"} Contract Explorer`
 	const icon = isOpen ? <Icon.X /> : "🔍"
 
 	return (
-		<CEContext.Provider value={value}>
+		<>
 			<Button
 				className={`ContractExplorer__toggle ContractExplorer__toggle--${placement} Button Button--primary Button--xl`}
 				variant="primary"
@@ -80,7 +57,7 @@ export function ContractExplorer({
 			</Button>
 
 			<Modal visible={isOpen} onClose={toggleIsOpen}>
-				<Modal.Heading>✨📃🔍 Stellar Contract Explorer</Modal.Heading>
+				<Modal.Heading>📃🔍 Contract Explorer</Modal.Heading>
 
 				<Modal.Body>
 					<IconButton
@@ -90,9 +67,9 @@ export function ContractExplorer({
 						className="ContractExplorer__toggle-icon Button Button--xl Button--primary"
 					/>
 
-					<Debugger contracts={contracts} />
+					<ContractExplorer {...rest} />
 				</Modal.Body>
 			</Modal>
-		</CEContext.Provider>
+		</>
 	)
 }

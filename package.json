@@ -1,5 +1,6 @@
 {
-  "name": "stellar-contract-explorer",
+  "$schema": "https://json.schemastore.org/package",
+  "name": "@theahaco/contract-explorer",
   "version": "1.0.0",
   "description": "🔍 Interactive explorer and debugger for Stellar smart contracts",
   "type": "module",
@@ -19,35 +20,36 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "eslint .",
     "format": "prettier . --write",
+    "lint": "eslint .",
+    "prepack": "run-p -l format lint typecheck",
     "prepublishOnly": "npm run build",
-    "typecheck": "tsc",
-    "validate": "npm run lint && npm run format && npm run typecheck"
+    "typecheck": "tsc"
   },
   "publishConfig": {
     "access": "public"
   },
-  "prettier": "@aha-co/config/prettier",
+  "prettier": "@theahaco/ts-config/prettier",
   "peerDependencies": {
-    "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.20",
-    "@types/node": "^24.8.1",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.1",
+    "@types/node": "^25.1.0",
+    "@types/react": "^19.2.10",
+    "@types/react-dom": "^19.2.3",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.6.2",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@aha-co/config": "^1.2.0",
     "@stellar/design-system": "^3.2.2",
     "@stellar/stellar-sdk": "^14.2.0",
     "@stellar/stellar-xdr-json": "^23.0.0",
     "@tanstack/react-query": "^5.90.5",
+    "@theahaco/ts-config": "^1.2.0",
     "json-schema": "^0.4.0",
     "lossless-json": "^4.3.0"
   },
