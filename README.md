@@ -64,7 +64,7 @@ import {
 
 // Load contracts and get wallet props as above
 
-;<ContractExplorerModal
+<ContractExplorerModal
 	placement="left"
 	initialIsOpen={false}
 	contracts={contracts}
