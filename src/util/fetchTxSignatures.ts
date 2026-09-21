@@ -47,8 +47,8 @@ export const fetchTxSignatures = async ({
 		if (tx instanceof FeeBumpTransaction) {
 			sourceAccounts[convertMuxedAccountToEd25519Account(tx.feeSource)] = []
 			groupedSignatures.push([
-				tx.signatures.map((x) => ({ sig: x.signature() })),
-				tx.hash(),
+				tx.signatures.map((x) => ({ sig: Buffer.from(x.signature.toBytes()) })),
+				Buffer.from(tx.hash()),
 			])
 
 			tx = tx.innerTransaction
@@ -63,8 +63,8 @@ export const fetchTxSignatures = async ({
 		})
 
 		groupedSignatures.push([
-			tx.signatures.map((x) => ({ sig: x.signature() })),
-			tx.hash(),
+			tx.signatures.map((x) => ({ sig: Buffer.from(x.signature.toBytes()) })),
+			Buffer.from(tx.hash()),
 		])
 
 		const accounts = Object.keys(sourceAccounts)
@@ -110,9 +110,11 @@ export const fetchTxSignatures = async ({
 					// tx hash in signatures array, so we can ignore pre-authorized transactions here.
 					switch (signer.type) {
 						case "sha256_hash":
-							const hashXSigner = StrKey.decodeSha256Hash(signer.key)
+							const hashXSigner = Buffer.from(
+								StrKey.decodeSha256Hash(signer.key),
+							)
 
-							const hashXSignature = hash(sigObj.sig)
+							const hashXSignature = Buffer.from(hash(sigObj.sig))
 							isValid = hashXSigner.equals(hashXSignature)
 							break
 						case "ed25519_public_key":
