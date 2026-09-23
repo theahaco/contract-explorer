@@ -79,7 +79,7 @@ describe("loadContractsFromNetwork (E2E, local network)", () => {
 		)
 		const funcs = result.loaded.counter.default.spec
 			.funcs()
-			.map((f) => f.name().toString())
+			.map((f) => f.name.toString())
 		expect(funcs.sort()).toEqual(["get_count", "increment"])
 	})
 
@@ -90,6 +90,6 @@ describe("loadContractsFromNetwork (E2E, local network)", () => {
 		)
 		expect(result.loaded).toEqual({})
 		// the sdk rejects with a bare {code, message}, not an Error
-		expect(result.failed.missing).toMatch(/could not obtain contract hash/i)
+		expect(result.failed.missing).toMatch(/could not obtain contract instance/i)
 	})
 })

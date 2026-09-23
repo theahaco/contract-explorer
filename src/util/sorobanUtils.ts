@@ -10,7 +10,6 @@ import {
 	type Transaction,
 	BASE_FEE,
 	nativeToScVal,
-	type OperationOptions,
 } from "@stellar/stellar-sdk"
 import {
 	type AnyObject,
@@ -49,15 +48,15 @@ export const getContractDataXDR = ({
 	const getXdrDurability = (durability: string) => {
 		switch (durability) {
 			case "persistent":
-				return xdr.ContractDataDurability.persistent()
+				return xdr.ContractDataDurability.persistent
 			// https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage#temporary-storage
 			// TTL for the temporary data can be extended; however,
 			// it is unsafe to rely on the extensions to preserve data since
 			// there is always a risk of losing temporary data
 			case "temporary":
-				return xdr.ContractDataDurability.temporary()
+				return xdr.ContractDataDurability.temporary
 			default:
-				return xdr.ContractDataDurability.persistent()
+				return xdr.ContractDataDurability.persistent
 		}
 	}
 
@@ -156,7 +155,7 @@ export const buildTxWithSorobanData = ({
 					args: sorobanOp.params.args,
 					auth: sorobanOp.params.auth,
 					source: sorobanOp.source_account,
-				} as OperationOptions.InvokeContractFunction)
+				} as Parameters<typeof Operation.invokeContractFunction>[0])
 			default:
 				throw new Error(`Unsupported Soroban operation type: ${operationType}`)
 		}
@@ -251,18 +250,20 @@ const getScValFromArg = (arg: unknown, scVals: xdr.ScVal[]): xdr.ScVal => {
 
 					const mapScValOne = nativeToScVal(mapVal[items[0]], {
 						type: mapType[items[0]],
-					})
+					} as Parameters<typeof nativeToScVal>[1])
 
 					scVals.push(mapScValOne)
 
 					const mapScValTwo = nativeToScVal(mapVal[items[1]], {
 						type: mapType[items[1]],
-					})
+					} as Parameters<typeof nativeToScVal>[1])
 
 					scVals.push(mapScValTwo)
 				}
 
-				return nativeToScVal(mapVal, { type: mapType })
+				return nativeToScVal(mapVal, {
+					type: mapType,
+				} as Parameters<typeof nativeToScVal>[1])
 			}
 			return getScValFromArg(subArray, scVals)
 		})
@@ -362,7 +363,9 @@ const convertObjectToScVal = (obj: Record<string, unknown>): xdr.ScVal => {
 		}
 	}
 
-	return nativeToScVal(convertedValue, { type: typeHints })
+	return nativeToScVal(convertedValue, {
+		type: typeHints,
+	} as Parameters<typeof nativeToScVal>[1])
 }
 
 type MapPair = {
@@ -414,7 +417,9 @@ const convertTupleToScVal = (tupleArray: TupleValue[]) => {
 		if (v.type === "bytes" && typeof v.value === "string") {
 			return nativeToScVal(new Uint8Array(Buffer.from(v.value, "base64")))
 		}
-		return nativeToScVal(v.value, { type: v.type })
+		return nativeToScVal(v.value, {
+			type: v.type,
+		} as Parameters<typeof nativeToScVal>[1])
 	})
 
 	// JS SDK's nativeToScval doesn't support an array of different types
@@ -433,7 +438,9 @@ const getScValFromPrimitive = (v: PrimitiveArg) => {
 	if (v.type === "bytes" && typeof v.value === "string") {
 		return nativeToScVal(new Uint8Array(Buffer.from(v.value, "base64")))
 	}
-	return nativeToScVal(v.value, { type: v.type })
+	return nativeToScVal(v.value, {
+		type: v.type,
+	} as Parameters<typeof nativeToScVal>[1])
 }
 
 const getScValsFromArgs = (
@@ -473,7 +480,9 @@ const getScValsFromArgs = (
 			// MAP CASE
 			if (isMap(argValue)) {
 				const { mapVal, mapType } = convertObjectToMap(argValue)
-				const mapScVal = nativeToScVal(mapVal, { type: mapType })
+				const mapScVal = nativeToScVal(mapVal, {
+					type: mapType,
+				} as Parameters<typeof nativeToScVal>[1])
 				scVals.push(mapScVal)
 				return scVals
 			}
