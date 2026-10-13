@@ -12,12 +12,12 @@ import { Client, Spec } from "@stellar/stellar-sdk/contract"
 const entries = [
 	xdr.ScSpecEntry.scSpecEntryFunctionV0(
 		new xdr.ScSpecFunctionV0({
-			doc: Buffer.from("Increment the counter by the given amount"),
-			name: Buffer.from("increment"),
+			doc: "Increment the counter by the given amount",
+			name: "increment",
 			inputs: [
 				new xdr.ScSpecFunctionInputV0({
-					doc: Buffer.from("Amount to increment by"),
-					name: Buffer.from("by"),
+					doc: "Amount to increment by",
+					name: "by",
 					type: xdr.ScSpecTypeDef.scSpecTypeU32(),
 				}),
 			],
@@ -26,8 +26,8 @@ const entries = [
 	),
 	xdr.ScSpecEntry.scSpecEntryFunctionV0(
 		new xdr.ScSpecFunctionV0({
-			doc: Buffer.from("Return the current counter value"),
-			name: Buffer.from("get_count"),
+			doc: "Return the current counter value",
+			name: "get_count",
 			inputs: [],
 			outputs: [xdr.ScSpecTypeDef.scSpecTypeU32()],
 		}),

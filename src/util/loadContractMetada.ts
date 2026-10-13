@@ -43,7 +43,7 @@ export const loadContractMetadata = async (
 					? (wasmData.contractenvmetav0 as unknown)
 					: undefined,
 			wasmHash,
-			wasmBinary: wasm.toString("hex"),
+			wasmBinary: Buffer.from(wasm).toString("hex"),
 		}
 
 		return { ...metadata } as ContractMetadata
@@ -62,13 +62,24 @@ const loadWasmHash = async (contractId: string, rpcUrl: string) => {
 		if (!response.entries.length || !response.entries[0]?.val) {
 			throw new Error(`No entries found for contract ${contractId}`)
 		}
-		const wasmHash = response.entries[0].val
-			.contractData()
-			.val()
-			.instance()
-			.executable()
-			.wasmHash()
-			.toString("hex")
+		const entryVal = response.entries[0].val
+		if (entryVal.type !== "contractData") {
+			throw new Error(`Expected contract data entry for contract ${contractId}`)
+		}
+
+		const instanceVal = entryVal.contractData.val
+		if (instanceVal.type !== "scvContractInstance") {
+			throw new Error(`Expected contract instance for contract ${contractId}`)
+		}
+
+		const { executable } = instanceVal.instance
+		if (executable.type !== "contractExecutableWasm") {
+			throw new Error(
+				`Contract ${contractId} is not backed by a Wasm executable`,
+			)
+		}
+
+		const wasmHash = executable.wasmHash.toString()
 
 		return wasmHash
 	} catch (error) {
@@ -88,7 +99,7 @@ const loadWasmBinary = async (wasmHash: string, rpcUrl: string) => {
 	}
 }
 
-export const getWasmContractData = async (wasmBytes: Buffer) => {
+export const getWasmContractData = async (wasmBytes: Uint8Array) => {
 	try {
 		// TODO: we might not have to manually convert once this is fixed in the sdk
 		// https://github.com/stellar/js-stellar-sdk/issues/1242

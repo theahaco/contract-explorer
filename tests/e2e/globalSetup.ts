@@ -11,10 +11,10 @@ const RPC_URL = "http://localhost:8000/rpc"
 const FRIENDBOT_URL = "http://localhost:8000/friendbot"
 
 /**
- * Minimum protocol supported by test fixture contract
- * see: tests/fixtures/counter-contract/Cargo.toml soroban-sdk version
+ * The fixture contract (soroban-sdk 27) needs protocol 27+, but current
+ * quickstart images fail to simulate its upload on a node held at 27.
  */
-const MIN_PROTOCOL = 27
+const MIN_PROTOCOL = 28
 
 const START_CMD = `stellar container start local --protocol-version ${MIN_PROTOCOL}`
 
